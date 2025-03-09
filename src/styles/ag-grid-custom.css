@@ -81,3 +81,23 @@
   background-color: #f8fafc;
   border-bottom: 2px solid var(--ag-row-border-color);
 }
+
+.gm-high {
+  background-color: #4caf50 !important; /* Green */
+  color: white;
+}
+
+.gm-medium {
+  background-color: #ffeb3b !important; /* Yellow */
+  color: black;
+}
+
+.gm-low {
+  background-color: #ff9800 !important; /* Orange */
+  color: black;
+}
+
+.gm-critical {
+  background-color: #f44336 !important; /* Red */
+  color: white;
+}

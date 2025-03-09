@@ -141,23 +141,49 @@ const PlanningPage: React.FC = () => {
       {
         ...baseColDef,
         field: `${weekNumber}_gm_pct`,
-        headerName: 'GM %',
-        cellClassRules: {
-          'gm-critical': (params: CellClassParams) => params.value <= 5,
-          'gm-low': (params: CellClassParams) => params.value > 5 && params.value < 10,
-          'gm-medium': (params: CellClassParams) => params.value >= 10 && params.value < 40,
-          'gm-high': (params: CellClassParams) => params.value >= 40
-        },
+        headerName: "GM %",
         valueGetter: (params: ValueGetterParams) => {
           const units = getWeekData(params.data.storeCode, params.data.skuCode, weekNumber);
           const sku = getSku(params.data.skuCode);
           const salesDollars = units * (sku?.price || 0);
           const costDollars = units * (sku?.cost || 0);
           const gmDollars = salesDollars - costDollars;
-          return calculateGmPercentage(salesDollars, gmDollars);
+          const gmPercentage = calculateGmPercentage(salesDollars, gmDollars);
+          console.log(`Week: ${weekNumber}, Store: ${params.data.storeCode}, SKU: ${params.data.skuCode}, GM%: ${gmPercentage}`);
+  
+          return gmPercentage;
         },
         valueFormatter: percentageFormatter,
+        cellClassRules: {
+          "gm-high": (params: CellClassParams) =>{
+            console.log("CellClassRule GM %:", params.value);
+            return params.value >= 40;
+          },
+          "gm-medium": (params: CellClassParams) => params.value >= 10 && params.value < 40,
+          "gm-low": (params: CellClassParams) => params.value > 5 && params.value < 10,
+          "gm-critical": (params: CellClassParams) => params.value <= 5,
+        },        
       },
+      // {
+      //   ...baseColDef,
+      //   field: `${weekNumber}_gm_pct`,
+      //   headerName: 'GM %',
+      //   cellClassRules: {
+      //     'gm-critical': (params: CellClassParams) => params.value <= 5,
+      //     'gm-low': (params: CellClassParams) => params.value > 5 && params.value < 10,
+      //     'gm-medium': (params: CellClassParams) => params.value >= 10 && params.value < 40,
+      //     'gm-high': (params: CellClassParams) => params.value >= 40
+      //   },
+      //   valueGetter: (params: ValueGetterParams) => {
+      //     const units = getWeekData(params.data.storeCode, params.data.skuCode, weekNumber);
+      //     const sku = getSku(params.data.skuCode);
+      //     const salesDollars = units * (sku?.price || 0);
+      //     const costDollars = units * (sku?.cost || 0);
+      //     const gmDollars = salesDollars - costDollars;
+      //     return calculateGmPercentage(salesDollars, gmDollars);
+      //   },
+      //   valueFormatter: percentageFormatter,
+      // },
     ];
   }, [getWeekData, getSku, calculateGmPercentage]);
 
@@ -194,13 +220,12 @@ const PlanningPage: React.FC = () => {
 
   const rowData = useMemo(() => {
     if (!stores.length || !skus.length) return [];
-    
     const rows: any[] = [];
     stores.forEach(store => {
       skus.forEach(sku => {
         rows.push({
-          storeCode: store.storeCode,
-          skuCode: sku.skuCode,
+          storeCode: store?.storeCode,
+          skuCode: sku?.skuCode,
         });
       });
     });
@@ -208,7 +233,6 @@ const PlanningPage: React.FC = () => {
   }, [stores, skus]);
 
   if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
-
   return (
     <div className="h-screen bg-gray-100">
       <div className="p-6">
@@ -219,7 +243,7 @@ const PlanningPage: React.FC = () => {
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
               animateRows={true}
-              suppressColumnVirtualisation={true}
+              suppressColumnVirtualisation={false}
               enableRangeSelection={true}
               suppressRowClickSelection={true}
               headerHeight={48}

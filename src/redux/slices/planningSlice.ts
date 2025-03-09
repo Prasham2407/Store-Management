@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { WeekData, PlanningRow } from '../../types/Planning';
 
 interface PlanningData {
   storeCode: string;
@@ -10,7 +9,7 @@ interface PlanningData {
 
 // Sample data
 const mockPlanningData: PlanningData[] = [
-  { storeCode: 'ST035', skuCode: 'SK00158', week: 'W01', salesUnits: 58 },
+  { storeCode: 'ST035', skuCode: 'SK00158', week: 'W01', salesUnits: 69 },
   { storeCode: 'ST035', skuCode: 'SK00158', week: 'W07', salesUnits: 107 },
   { storeCode: 'ST035', skuCode: 'SK00158', week: 'W09', salesUnits: 0 },
   { storeCode: 'ST035', skuCode: 'SK00158', week: 'W11', salesUnits: 92 },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
+import logo from "../assets/gsynergy-logo.svg"
 
 
 const Navbar: React.FC = () => {
@@ -31,7 +32,7 @@ const Navbar: React.FC = () => {
     <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
       <div className="flex items-center">
         <img 
-          src="../assets/gsynergy-logo.svg" 
+          src={logo}
           alt="GSynergy" 
           className="h-8"
         />
