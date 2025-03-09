@@ -55,7 +55,7 @@ const SKUPage: React.FC = () => {
 
   const ActionCellRenderer = (params: any) => {
     return (
-      <div className="flex gap-4 items-center mt-4">
+      <div className="flex gap-4 items-center mt-3 text-xl">
         <FaTrash
           className="text-gray-400 hover:text-red-600 cursor-pointer"
           onClick={() => handleDelete(params.data.id)}

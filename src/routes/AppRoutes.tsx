@@ -6,7 +6,6 @@ import SKUPage from "../pages/SKU";
 
 // Lazy-loaded pages
 const Store = lazy(() => import("../pages/Store"));
-const SKU = lazy(() => import("../pages/SKU"));
 const Planning = lazy(() => import("../pages/Planning"));
 const Charts = lazy(() => import("../pages/Charts"));
 

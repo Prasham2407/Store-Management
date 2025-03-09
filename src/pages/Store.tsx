@@ -62,7 +62,7 @@ const StorePage: React.FC = () => {
 
   const ActionCellRenderer = (params: any) => {
     return (
-      <div className="flex flex-row gap-2 mt-4">
+      <div className="flex flex-row gap-2 mt-3 text-xl">
         <div className="items-center">
           <FaEdit
             className="text-gray-400 hover:text-red-600 cursor-pointer"
