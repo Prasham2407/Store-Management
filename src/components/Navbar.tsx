@@ -1,7 +1,9 @@
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { FaUserCircle } from 'react-icons/fa';
 
-const Navbar = () => {
+
+const Navbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -16,7 +18,7 @@ const Navbar = () => {
       case '/charts':
         return 'Analytics Charts';
       default:
-        return 'Dashboard';
+        return 'Store Management';
     }
   };
 
@@ -26,27 +28,18 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md h-16 flex-shrink-0">
-      <div className="h-full px-6 flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center">
-          <img src="/logo.png" alt="Logo" className="h-8 w-8 mr-2" />
-          <span className="text-xl font-bold text-gray-800">Company Name</span>
-        </div>
-
-        {/* Page Title */}
-        <h1 className="text-xl font-semibold text-gray-700">{getPageTitle()}</h1>
-
-        {/* Logout Button */}
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded hover:bg-blue-600 transition-colors"
-        >
-          <FaSignOutAlt />
-          Logout
-        </button>
+    <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
+      <div className="flex items-center">
+        <img 
+          src="../assets/gsynergy-logo.svg" 
+          alt="GSynergy" 
+          className="h-8"
+        />
       </div>
-    </nav>
+      <div className="flex items-center gap-2">
+        <FaUserCircle className="w-6 h-6 text-gray-600" />
+      </div>
+    </div>
   );
 };
 

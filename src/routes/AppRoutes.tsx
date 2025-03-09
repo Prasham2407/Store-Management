@@ -2,6 +2,7 @@ import { Route, Routes, Navigate, Outlet } from "react-router-dom";
 import React, { lazy, Suspense } from "react";
 import Layout from "../components/Layout";
 import Login from "../pages/Login";
+import SKUPage from "../pages/SKU";
 
 // Lazy-loaded pages
 const Store = lazy(() => import("../pages/Store"));
@@ -27,7 +28,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<Login />} />
         <Route element={<ProtectedLayout />}>
           <Route path="/store" element={<Store />} />
-          <Route path="/sku" element={<SKU />} />
+          <Route path="sku" element={<SKUPage />} />
           <Route path="/planning" element={<Planning />} />
           <Route path="/charts" element={<Charts />} />
           <Route path="*" element={<Navigate to="/store" replace />} />
