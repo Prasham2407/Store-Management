@@ -148,9 +148,7 @@ const PlanningPage: React.FC = () => {
           const salesDollars = units * (sku?.price || 0);
           const costDollars = units * (sku?.cost || 0);
           const gmDollars = salesDollars - costDollars;
-          const gmPercentage = calculateGmPercentage(salesDollars, gmDollars);
-          console.log(`Week: ${weekNumber}, Store: ${params.data.storeCode}, SKU: ${params.data.skuCode}, GM%: ${gmPercentage}`);
-  
+          const gmPercentage = calculateGmPercentage(salesDollars, gmDollars);  
           return gmPercentage;
         },
         valueFormatter: percentageFormatter,
