@@ -35,7 +35,6 @@ Password: Demo@123
 
 The login page features:
 - Secure authentication with error handling
-- Remember me functionality
 - Password visibility toggle
 - Responsive design for all devices
 
@@ -55,9 +54,7 @@ Efficiently manage store operations:
 
 Complete SKU lifecycle management:
 - Comprehensive SKU database with grid view
-- Quick add/edit functionality
 - Categories: Tops, Bottoms, Outerwear, etc.
-- Departments: Men's, Women's, Accessories
 - Price and cost tracking
 - Automatic GM calculations
 - SKU code generation
@@ -70,7 +67,6 @@ Weekly planning and tracking:
 - Sales and GM tracking
 - Historical data comparison
 - Performance metrics visualization
-- Activity planning calendar
 
 ### 5. Analytics
 ![Analytics Dashboard](./screenshots/analytics.png)
@@ -83,32 +79,6 @@ Interactive data visualization:
 - Interactive tooltips
 - Custom date range selection
 
-## Key Features
-
-### Store Management
-- CRUD operations for stores
-- Real-time GM calculations
-- Data grid with sorting/filtering
-- Inline editing capabilities
-
-### SKU Management
-- Complete SKU database
-- Category organization
-- Department classification
-- Price/Cost tracking
-- GM calculations
-
-### Planning Tools
-- Weekly planning interface
-- Performance tracking
-- Historical comparisons
-- Metric analysis
-
-### Analytics
-- Visual data representation
-- Interactive charts
-- Performance trends
-
 ## Tech Stack
 
 - **Frontend**: React 18 with TypeScript
@@ -116,7 +86,7 @@ Interactive data visualization:
 - **Data Grid**: AG Grid Enterprise
 - **Charts**: Chart.js with react-chartjs-2
 - **Styling**: Tailwind CSS
-- **Types**: Strong TypeScript typing
+- **Types**: TypeScript typing
 
 ## Project Structure
 
