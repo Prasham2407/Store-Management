@@ -4,14 +4,13 @@ import { AgGridReact } from 'ag-grid-react';
 import { 
   ColDef, 
   GridReadyEvent,
-  RowDragEndEvent,
   ClientSideRowModelModule,
   ModuleRegistry,
   CellEditingStoppedEvent,
   GridApi,
   ValueFormatterParams
 } from 'ag-grid-community';
-import { FaTrash, FaGripLines } from 'react-icons/fa';
+import { FaTrash, FaGripLines, FaEdit } from 'react-icons/fa';
 import { Sku } from '../types/Sku';
 import { 
   fetchSkus, 
@@ -35,6 +34,7 @@ const SKUPage: React.FC = () => {
   const { skus, loading, error } = useSelector((state: RootState) => state.sku);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editSku, setEditSku] = useState<{editId: number, isEdit: boolean}>({editId: 0, isEdit: false});
   const [newSku, setNewSku] = useState<Omit<Sku, 'id'>>({
     skuCode: '',
     name: '',
@@ -56,6 +56,11 @@ const SKUPage: React.FC = () => {
   const ActionCellRenderer = (params: any) => {
     return (
       <div className="flex gap-4 items-center mt-3 text-xl">
+        <FaEdit
+          className="text-gray-400 hover:text-red-600 cursor-pointer"
+          onClick={() => handleEditClick(params.data.id)}
+          title="Edit SKU"
+        />
         <FaTrash
           className="text-gray-400 hover:text-red-600 cursor-pointer"
           onClick={() => handleDelete(params.data.id)}
@@ -75,35 +80,42 @@ const SKUPage: React.FC = () => {
     {
       headerName: '',
       field: 'actions',
-      width: 100,
+      width: 150,
       cellRenderer: ActionCellRenderer,
       sortable: false,
       filter: false,
       cellClass: 'flex items-center',
+      suppressMovable: true,
+      pinned: 'left'
     },
     {
       field: 'skuCode',
       headerName: 'SKU Code',
-      width: 120,
+      width: 130,
       sort: 'asc',
       rowDrag: true,
+      suppressMovable: true,
+      pinned: 'left'
     },
     {
       field: 'name',
       headerName: 'Name',
-      flex: 1,
+      minWidth: 200,
+      flex: 2,
       editable: true,
     },
     {
       field: 'category',
       headerName: 'Category',
-      width: 130,
+      minWidth: 150,
+      flex: 1,
       editable: true,
     },
     {
       field: 'department',
       headerName: 'Department',
-      width: 150,
+      minWidth: 150,
+      flex: 1,
       editable: true,
     },
     {
@@ -113,6 +125,7 @@ const SKUPage: React.FC = () => {
       editable: true,
       type: 'numericColumn',
       valueFormatter: currencyFormatter,
+      cellClass: 'text-right'
     },
     {
       field: 'cost',
@@ -121,6 +134,7 @@ const SKUPage: React.FC = () => {
       editable: true,
       type: 'numericColumn',
       valueFormatter: currencyFormatter,
+      cellClass: 'text-right'
     },
   ], []);
 
@@ -128,6 +142,15 @@ const SKUPage: React.FC = () => {
     sortable: true,
     filter: true,
     resizable: true,
+    cellStyle: { display: 'flex', alignItems: 'center' }
+  }), []);
+
+  const gridOptions = useMemo(() => ({
+    rowHeight: 48,
+    headerHeight: 48,
+    rowDragManaged: true,
+    animateRows: true,
+    suppressMoveWhenRowDragging: false
   }), []);
 
   const onCellEditingStopped = useCallback((event: CellEditingStoppedEvent) => {
@@ -153,7 +176,43 @@ const SKUPage: React.FC = () => {
     setNewSku({ skuCode: '', name: '', category: '', department: '', price: 0, cost: 0 });
   };
 
-  const onRowDragEnd = (event: RowDragEndEvent) => {
+  const handleEdit = () => {
+    const updatedSkuData = {
+      skuCode: newSku.skuCode,
+      name: newSku.name,
+      category: newSku.category,
+      department: newSku.department,
+      price: Number(newSku.price),
+      cost: Number(newSku.cost)
+    };
+    
+    dispatch(updateSku({
+      id: editSku.editId,
+      updates: updatedSkuData
+    }));
+    
+    setShowAddForm(false);
+    setEditSku({editId: 0, isEdit: false});
+    setNewSku({ skuCode: '', name: '', category: '', department: '', price: 0, cost: 0 });
+  };
+
+  const handleEditClick = (id: number) => {
+    const selectedSkuDetail = skus.find((x) => x.id === id);
+    if (selectedSkuDetail) {
+      setNewSku({
+        skuCode: selectedSkuDetail.skuCode,
+        name: selectedSkuDetail.name,
+        category: selectedSkuDetail.category,
+        department: selectedSkuDetail.department,
+        price: selectedSkuDetail.price,
+        cost: selectedSkuDetail.cost
+      });
+      setEditSku({editId: id, isEdit: true});
+      setShowAddForm(true);
+    }
+  };
+
+  const onRowDragEnd = () => {
     if (!gridApi) return;
     
     const newSkus: Sku[] = [];
@@ -167,6 +226,7 @@ const SKUPage: React.FC = () => {
   };
 
   if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
+  if (loading) return <div className="p-4">Loading SKUs...</div>;
 
   return (
     <div className="h-screen bg-gray-100">
@@ -176,7 +236,7 @@ const SKUPage: React.FC = () => {
             onClick={() => setShowAddForm(true)}
             className="bg-coral-pink text-gray-800 px-6 py-2 rounded-lg text-sm font-medium uppercase tracking-wider shadow-sm hover:bg-opacity-90 transition-colors"
           >
-            NEW SKU
+            {editSku.isEdit ? 'EDIT SKU' : 'NEW SKU'}
           </button>
         </div>
 
@@ -223,7 +283,6 @@ const SKUPage: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>
                 <input
                   type="number"
-                  step="0.01"
                   placeholder="Enter price"
                   value={newSku.price}
                   onChange={e => setNewSku({ ...newSku, price: parseFloat(e.target.value) })}
@@ -234,7 +293,6 @@ const SKUPage: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Cost</label>
                 <input
                   type="number"
-                  step="0.01"
                   placeholder="Enter cost"
                   value={newSku.cost}
                   onChange={e => setNewSku({ ...newSku, cost: parseFloat(e.target.value) })}
@@ -244,16 +302,20 @@ const SKUPage: React.FC = () => {
             </div>
             <div className="mt-4 flex justify-end gap-2">
               <button
-                onClick={() => setShowAddForm(false)}
+                onClick={() => {
+                  setShowAddForm(false);
+                  setEditSku({editId: 0, isEdit: false});
+                  setNewSku({ skuCode: '', name: '', category: '', department: '', price: 0, cost: 0 });
+                }}
                 className="px-4 py-2 border border-gray-300 rounded text-gray-700 hover:bg-gray-50"
               >
                 Cancel
               </button>
               <button
-                onClick={handleAdd}
+                onClick={editSku.isEdit ? handleEdit : handleAdd}
                 className="bg-coral-pink text-gray-800 px-4 py-2 rounded hover:bg-opacity-90"
               >
-                Save SKU
+                {editSku.isEdit ? 'Edit SKU' : 'Save SKU'}
               </button>
             </div>
           </div>
@@ -265,17 +327,15 @@ const SKUPage: React.FC = () => {
               rowData={skus}
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
+              gridOptions={gridOptions}
+              onGridReady={onGridReady}
               animateRows={true}
               rowDragManaged={true}
-              onGridReady={onGridReady}
+              suppressMoveWhenRowDragging={false}
               onRowDragEnd={onRowDragEnd}
               onCellEditingStopped={onCellEditingStopped}
-              suppressMoveWhenRowDragging={true}
-              headerHeight={48}
-              rowHeight={48}
-              suppressCellFocus={true}
               suppressRowClickSelection={true}
-              suppressLoadingOverlay={true}
+              enableRangeSelection={true}
             />
           </div>
         </div>
@@ -284,4 +344,4 @@ const SKUPage: React.FC = () => {
   );
 };
 
-export default SKUPage; 
+export default SKUPage;

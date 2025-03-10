@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Sku, SkuUpdate } from '../../types/Sku';
 
 // Mock data
-const mockSkus: Sku[] = [
+let mockSkus: Sku[] = [
   { id: 1, skuCode: 'SK00158', name: 'Crew Neck Merino Wool Sweater', category: 'Tops', department: "Men's Apparel", price: 114.99, cost: 18.28 },
   { id: 2, skuCode: 'SK00269', name: 'Faux Leather Leggings', category: 'Jewelry', department: 'Footwear', price: 9.99, cost: 8.45 },
   { id: 3, skuCode: 'SK00300', name: 'Fleece-Lined Parka', category: 'Jewelry', department: 'Unisex Accessories', price: 199.99, cost: 17.80 },
@@ -53,14 +53,17 @@ export const addSku = createAsyncThunk(
 export const updateSku = createAsyncThunk(
   'sku/updateSku',
   async ({ id, updates }: { id: number; updates: SkuUpdate }) => {
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 500));
     const sku = mockSkus.find(s => s.id === id);
     if (!sku) throw new Error('SKU not found');
-    const updatedSku = { ...sku, ...updates };
+    // const updatedSku = { ...sku, ...updates };
     const index = mockSkus.findIndex(s => s.id === id);
-    mockSkus[index] = updatedSku;
-    return updatedSku;
+    if (index === -1) throw new Error("SKU not found");
+    mockSkus = mockSkus.map((sku) =>
+      sku.id === id ? { ...sku, ...updates } : sku
+    );
+
+    return mockSkus;
   }
 );
 

@@ -17,6 +17,8 @@
 .ag-theme-alpine .ag-header-cell {
   font-size: 14px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
 }
 
 .ag-theme-alpine .ag-cell {
@@ -24,14 +26,72 @@
   line-height: 48px;
   padding-left: 16px;
   padding-right: 16px;
+  display: flex;
+  align-items: center;
 }
 
 .ag-theme-alpine .ag-row {
   border-bottom: 1px solid var(--ag-row-border-color);
+  height: 48px !important;
 }
 
 .ag-theme-alpine .ag-row-drag {
+  cursor: grab;
   color: #999;
+}
+
+.ag-theme-alpine .ag-row-dragging {
+  background-color: #f3f4f6 !important;
+  opacity: 0.8;
+  cursor: grabbing !important;
+  z-index: 100;
+}
+
+/* Row hover and selection */
+.ag-theme-alpine .ag-row:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.ag-theme-alpine .ag-row.ag-row-selected {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Cell focus and editing */
+.ag-theme-alpine .ag-cell-focus {
+  border: none !important;
+}
+
+.ag-theme-alpine .ag-cell-inline-editing {
+  padding: 8px !important;
+  height: 40px !important;
+}
+
+/* Header styling */
+.ag-theme-alpine .ag-header-group-cell {
+  font-weight: 600;
+  background-color: #f8fafc;
+  border-bottom: 2px solid var(--ag-row-border-color);
+}
+
+/* Custom color for buttons */
+.bg-coral-pink {
+  background-color: rgb(255, 178, 162);
+}
+
+/* Remove cell selection highlight */
+.ag-theme-alpine .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
+  border: none !important;
+}
+
+/* Numeric column alignment */
+.ag-theme-alpine .ag-cell[col-id="price"],
+.ag-theme-alpine .ag-cell[col-id="cost"] {
+  justify-content: flex-end;
+}
+
+/* Action column alignment */
+.ag-theme-alpine .ag-cell[col-id="actions"] {
+  justify-content: flex-start;
 }
 
 /* GM Percentage conditional formatting */
@@ -53,33 +113,6 @@
 .ag-theme-alpine .gm-critical {
   background-color: #fee2e2 !important;
   color: #991b1b !important;
-}
-
-/* Custom color for the "NEW STORE" button */
-.bg-coral-pink {
-  background-color: rgb(255, 178, 162);
-}
-
-/* Remove default focus outline */
-.ag-theme-alpine .ag-cell-focus {
-  border: none !important;
-}
-
-/* Customize row hover */
-.ag-theme-alpine .ag-row:hover {
-  background-color: rgba(0, 0, 0, 0.02);
-}
-
-/* Remove cell selection highlight */
-.ag-theme-alpine .ag-cell-focus:not(.ag-cell-range-selected):focus-within {
-  border: none !important;
-}
-
-/* Month group header styling */
-.ag-theme-alpine .ag-header-group-cell {
-  font-weight: 600;
-  background-color: #f8fafc;
-  border-bottom: 2px solid var(--ag-row-border-color);
 }
 
 .gm-high {
