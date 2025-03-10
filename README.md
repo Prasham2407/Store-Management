@@ -1,46 +1,153 @@
-# Getting Started with Create React App
+# Store Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React-based store management system for efficient retail operations management.
 
-## Available Scripts
+## Quick Start
 
-In the project directory, you can run:
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd store-management-system
+```
 
-### `npm start`
+2. Install dependencies:
+```bash
+npm install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+3. Start the development server:
+```bash
+npm start
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The application will be available at `http://localhost:3000`
 
-### `npm test`
+## Application Flow
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Authentication
+![Login Page](./screenshots/login.png)
 
-### `npm run build`
+To access the system, use the demo credentials:
+```
+Email: demo@gmail.com
+Password: Demo@123
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The login page features:
+- Secure authentication with error handling
+- Remember me functionality
+- Password visibility toggle
+- Responsive design for all devices
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. Store Management
+![Store Management](./screenshots/store.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Efficiently manage store operations:
+- View all stores in an interactive grid
+- Add new stores with location and metrics
+- Edit store details with inline editing
+- Delete stores with confirmation
+- Track GM% with conditional formatting
+- Sort and filter store data
 
-### `npm run eject`
+### 3. SKU Management
+![SKU Management](./screenshots/sku.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Complete SKU lifecycle management:
+- Comprehensive SKU database with grid view
+- Quick add/edit functionality
+- Categories: Tops, Bottoms, Outerwear, etc.
+- Departments: Men's, Women's, Accessories
+- Price and cost tracking
+- Automatic GM calculations
+- SKU code generation
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 4. Planning Dashboard
+![Planning Dashboard](./screenshots/planning.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Weekly planning and tracking:
+- Week-by-week performance view
+- Sales and GM tracking
+- Historical data comparison
+- Performance metrics visualization
+- Activity planning calendar
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 5. Analytics
+![Analytics Dashboard](./screenshots/analytics.png)
 
-## Learn More
+Interactive data visualization:
+- Mixed bar and line charts
+- GM Dollars trend (Bar chart)
+- GM Percentage overlay (Line chart)
+- Weekly performance comparison
+- Interactive tooltips
+- Custom date range selection
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Key Features
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Store Management
+- CRUD operations for stores
+- Real-time GM calculations
+- Data grid with sorting/filtering
+- Inline editing capabilities
+
+### SKU Management
+- Complete SKU database
+- Category organization
+- Department classification
+- Price/Cost tracking
+- GM calculations
+
+### Planning Tools
+- Weekly planning interface
+- Performance tracking
+- Historical comparisons
+- Metric analysis
+
+### Analytics
+- Visual data representation
+- Interactive charts
+- Performance trends
+
+## Tech Stack
+
+- **Frontend**: React 18 with TypeScript
+- **State Management**: Redux Toolkit
+- **Data Grid**: AG Grid Enterprise
+- **Charts**: Chart.js with react-chartjs-2
+- **Styling**: Tailwind CSS
+- **Types**: Strong TypeScript typing
+
+## Project Structure
+
+```
+src/
+├── pages/              # Main page components
+│   ├── Login.tsx      # Authentication page
+│   ├── Store.tsx      # Store management
+│   ├── SKU.tsx        # SKU operations
+│   ├── Planning.tsx   # Planning dashboard
+│   └── Charts.tsx     # Analytics
+├── redux/             # State management
+│   └── slices/        # Redux slices
+│       ├── authSlice.ts
+│       ├── storeSlice.ts
+│       └── skuSlice.ts
+├── styles/            # CSS and Tailwind
+│   └── ag-grid-custom.css
+└── types/             # TypeScript definitions
+    ├── Store.ts
+    └── Sku.ts
+```
+
+## Development
+
+The application uses:
+- Modern React practices with hooks
+- TypeScript for type safety
+- Redux Toolkit for state management
+- AG Grid for powerful data management
+- Chart.js for analytics visualization
+- Tailwind CSS for responsive design
+
+Note: Screenshots will be added to showcase the key features of each page. The application is designed to be intuitive and user-friendly, with a focus on efficiency and data accuracy.
