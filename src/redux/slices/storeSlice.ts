@@ -96,8 +96,6 @@ export const updateStore = createAsyncThunk(
       store.id === id ? { ...store, ...updates } : store
     );
 
-    console.log(mockStores, "Updated Store List");
-
     return [...mockStores]; 
   }
 );

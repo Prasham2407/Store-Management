@@ -154,7 +154,6 @@ const PlanningPage: React.FC = () => {
         valueFormatter: percentageFormatter,
         cellClassRules: {
           "gm-high": (params: CellClassParams) =>{
-            console.log("CellClassRule GM %:", params.value);
             return params.value >= 40;
           },
           "gm-medium": (params: CellClassParams) => params.value >= 10 && params.value < 40,
@@ -162,26 +161,6 @@ const PlanningPage: React.FC = () => {
           "gm-critical": (params: CellClassParams) => params.value <= 5,
         },        
       },
-      // {
-      //   ...baseColDef,
-      //   field: `${weekNumber}_gm_pct`,
-      //   headerName: 'GM %',
-      //   cellClassRules: {
-      //     'gm-critical': (params: CellClassParams) => params.value <= 5,
-      //     'gm-low': (params: CellClassParams) => params.value > 5 && params.value < 10,
-      //     'gm-medium': (params: CellClassParams) => params.value >= 10 && params.value < 40,
-      //     'gm-high': (params: CellClassParams) => params.value >= 40
-      //   },
-      //   valueGetter: (params: ValueGetterParams) => {
-      //     const units = getWeekData(params.data.storeCode, params.data.skuCode, weekNumber);
-      //     const sku = getSku(params.data.skuCode);
-      //     const salesDollars = units * (sku?.price || 0);
-      //     const costDollars = units * (sku?.cost || 0);
-      //     const gmDollars = salesDollars - costDollars;
-      //     return calculateGmPercentage(salesDollars, gmDollars);
-      //   },
-      //   valueFormatter: percentageFormatter,
-      // },
     ];
   }, [getWeekData, getSku, calculateGmPercentage]);
 
