@@ -63,7 +63,7 @@ export const updateSku = createAsyncThunk(
       sku.id === id ? { ...sku, ...updates } : sku
     );
 
-    return mockSkus;
+    return [...mockSkus];
   }
 );
 
@@ -111,10 +111,7 @@ const skuSlice = createSlice({
         state.skus.push(action.payload);
       })
       .addCase(updateSku.fulfilled, (state, action) => {
-        const index = state.skus.findIndex(sku => sku.id === action.payload.id);
-        if (index !== -1) {
-          state.skus[index] = action.payload;
-        }
+          state.skus = action.payload;
       })
       .addCase(deleteSku.fulfilled, (state, action) => {
         state.skus = state.skus.filter(sku => sku.id !== action.payload);
