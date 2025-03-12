@@ -89,19 +89,14 @@ export const addStore = createAsyncThunk(
 export const updateStore = createAsyncThunk(
   "store/updateStore",
   async ({ id, updates }: { id: number; updates: StoreUpdate }) => {
-    // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     const storeIndex = mockStores.findIndex((s) => s.id === id);
     if (storeIndex === -1) throw new Error("Store not found");
 
-    // ✅ Correctly update mockStores using map()
     mockStores = mockStores.map((store) =>
       store.id === id ? { ...store, ...updates } : store
     );
-
-    console.log(mockStores, "Updated Store List");
-
     return [...mockStores]; // Return full updated store list
   }
 );
@@ -150,7 +145,7 @@ const storeSlice = createSlice({
         state.stores.push(action.payload);
       })
       .addCase(updateStore.fulfilled, (state, action) => {
-        state.stores = action.payload; // Update the entire store list
+        state.stores = action.payload; // Update the entire store list.
       })
       .addCase(deleteStore.fulfilled, (state, action) => {
         state.stores = state.stores.filter(

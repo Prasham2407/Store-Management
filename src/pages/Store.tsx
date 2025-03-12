@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AgGridReact } from "ag-grid-react";
 import {
@@ -34,6 +34,7 @@ const StorePage: React.FC = () => {
   const { stores, loading, error } = useSelector(
     (state: RootState) => state.store
   );
+  const storeList = useRef(stores)
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newStore, setNewStore] = useState<Omit<Store, "id">>({
@@ -48,6 +49,10 @@ const StorePage: React.FC = () => {
   useEffect(() => {
     dispatch(fetchStores());
   }, [dispatch]);
+
+  useEffect(() => {
+    storeList.current = stores;
+  }, [stores]);
 
   useEffect(() => {
     if(isFetchCall){
@@ -168,7 +173,7 @@ const StorePage: React.FC = () => {
   };
 
   const handleEditClick = (id: number) => {
-    const selectedStoreDetail = stores.find((x) => x.id === id);
+    const selectedStoreDetail = storeList.current.find((x) => x.id === id);
     setNewStore({
       storeCode: selectedStoreDetail?.storeCode ?? "",
       name: selectedStoreDetail?.name ?? "",

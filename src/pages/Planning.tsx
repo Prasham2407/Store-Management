@@ -21,7 +21,7 @@ import '../styles/ag-grid-custom.css';
 
 const PlanningPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { planningData, loading, error } = useSelector((state: RootState) => state.planning);
+  const { planningData, error } = useSelector((state: RootState) => state.planning);
   const { skus } = useSelector((state: RootState) => state.sku);
   const { stores } = useSelector((state: RootState) => state.store);
 

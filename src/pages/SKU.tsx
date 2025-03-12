@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AgGridReact } from 'ag-grid-react';
 import { 
@@ -32,6 +32,7 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 const SKUPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { skus, loading, error } = useSelector((state: RootState) => state.sku);
+  const skuList = useRef(skus);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editSku, setEditSku] = useState<{editId: number, isEdit: boolean}>({editId: 0, isEdit: false});
@@ -47,6 +48,10 @@ const SKUPage: React.FC = () => {
   useEffect(() => {
     dispatch(fetchSkus());
   }, [dispatch]);
+
+  useEffect(() => {
+    skuList.current = skus
+  }, [skus])
 
   const onGridReady = (params: GridReadyEvent) => {
     setGridApi(params.api);
@@ -197,7 +202,7 @@ const SKUPage: React.FC = () => {
   };
 
   const handleEditClick = (id: number) => {
-    const selectedSkuDetail = skus.find((x) => x.id === id);
+    const selectedSkuDetail = skuList.current.find((x) => x.id === id);
     if (selectedSkuDetail) {
       setNewSku({
         skuCode: selectedSkuDetail.skuCode,
