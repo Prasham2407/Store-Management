@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,6 +12,8 @@ import {
   Legend,
   ChartData,
   ChartOptions,
+  LineController,
+  BarController
 } from "chart.js";
 
 ChartJS.register(
@@ -22,7 +24,9 @@ ChartJS.register(
   PointElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  LineController,
+  BarController
 );
 
 const mockData = [
@@ -38,30 +42,37 @@ const Charts = () => {
   const gmDollars = mockData.map((d) => d.gmDollars);
   const gmPercent = mockData.map((d) => d.gmPercent);
 
-  const chartData: ChartData<"bar"> = {
-    labels: ["W01", "W02", "W03", "W04", "W05"], // Add all weeks
+  const chartData: ChartData = {
+    labels,
     datasets: [
       {
+        type: 'bar',
         label: "GM Dollars",
-        data: [140061.78, 110391.21, 101657.28, 134341.07, 130398.15], // Add all values
+        data: gmDollars,
         backgroundColor: "rgba(54, 162, 235, 0.6)",
-        yAxisID: "y", // Maps to primary Y-axis
+        yAxisID: "y",
       },
       {
+        type: 'line',
         label: "GM %",
-        data: [58, 43, 39, 40, 47], // Add all GM % values
+        data: gmPercent,
         borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
         borderWidth: 2,
-        fill: false,
-        type: "line", // Specifies line chart
-        yAxisID: "y1", // Maps to secondary Y-axis
+        fill: true,
+        yAxisID: "y1",
+        tension: 0.4
       },
     ],
   };
-  
 
-  const chartOptions: ChartOptions<"bar"> = {
+  const chartOptions: ChartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
+    interaction: {
+      mode: 'index',
+      intersect: false,
+    },
     scales: {
       y: {
         type: "linear",
@@ -69,7 +80,14 @@ const Charts = () => {
         title: {
           display: true,
           text: "GM Dollars",
+          font: {
+            size: 14,
+            weight: 'bold'
+          }
         },
+        ticks: {
+          callback: (value) => `$${value.toLocaleString()}`
+        }
       },
       y1: {
         type: "linear",
@@ -77,24 +95,66 @@ const Charts = () => {
         title: {
           display: true,
           text: "GM %",
+          font: {
+            size: 14,
+            weight: 'bold'
+          }
+        },
+        ticks: {
+          callback: (value) => `${value}%`
         },
         grid: {
-          drawOnChartArea: false, // Avoid grid overlap
+          drawOnChartArea: false,
         },
       },
     },
     plugins: {
       legend: {
-        position: "top", // Must be "top", "left", "right", or "bottom"
+        position: "top",
+        align: "center",
+        labels: {
+          usePointStyle: true,
+          padding: 20,
+          font: {
+            size: 12
+          }
+        }
       },
-    },
+      tooltip: {
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        titleColor: '#000',
+        titleFont: {
+          size: 14,
+          weight: 'bold'
+        },
+        bodyColor: '#666',
+        bodyFont: {
+          size: 12
+        },
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        borderWidth: 1,
+        padding: 10,
+        usePointStyle: true,
+        callbacks: {
+          label: (context) => {
+            const value = context.raw as number;
+            const label = context.dataset.label;
+            if (label === "GM Dollars") {
+              return `${label}: $${value.toLocaleString()}`;
+            }
+            return `${label}: ${value}%`;
+          }
+        }
+      }
+    }
   };
-  
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Analytics Charts</h1>
-      <Bar data={chartData} options={chartOptions} />
+    <div className="p-6 bg-white rounded-lg shadow">
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Analytics Charts</h1>
+      <div className="h-[500px]">
+        <Chart type='bar' data={chartData} options={chartOptions} />
+      </div>
     </div>
   );
 };
